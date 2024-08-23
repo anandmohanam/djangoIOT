@@ -1,0 +1,228 @@
+{% load static %}
+<html xmlns:data-percent="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Django IoT project with ESP and Firebase integration for real-time sensor data monitoring and visualization.">
+  <meta name="keywords" content="Django, IoT, ESP, Firebase, Sensor Data, Real-time Monitoring, Web Development,firebase ,anandmohanam,anand,iot project">
+  <meta name="author" content="anand mohan">
+  <title>Django IoT Project with ESP and Firebase</title>
+     <link rel="icon" href="{% static 'icons/django-logo.png' %}" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'stylescss.css' %}">
+    <script src="{% static 'GaugeMeter.js' %}"></script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Django IoT Project",
+  "url": "https://yourwebsite.com",
+  "description": "A Django-based IoT project using ESP and Firebase for real-time sensor data visualization.",
+  "applicationCategory": "WebApplication",
+  "author": {
+    "@type": "Person",
+    "name": "anand"
+  }
+}
+</script>
+
+    <script>
+        $(document).ready(function(){
+            $(".GaugeMeter").gaugeMeter();
+        });
+    </script>
+
+  <script>
+    function sendNotifyRequest() {
+      $.ajax({
+        url: '{% url 'sensor' %}',  // The URL to send the request to
+        method: 'POST',   // HTTP method
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for POST requests
+        },
+        success: function(response) {
+          console.log('Notify request succeeded.');
+          // Optionally handle success (e.g., update UI)
+        },
+        error: function(xhr, status, error) {
+          console.error('Notify request failed:', status, error);
+          // Optionally handle error
+        }
+      });
+    }
+
+    $(document).ready(function(){
+      // Call sendNotifyRequest when needed, for example:
+      $('#notifyButton').click(function() {
+        sendNotifyRequest();
+      });
+    });
+  </script>
+    <style>
+    body {
+      background-color: #02070d !important;
+      color:white
+    }
+
+
+
+        .navbar {
+            display: flex;
+            justify-content: center; /* Center the content */
+            align-items: center;
+            gap: 20px; /* Add space between the items */
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 50px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .navbar .icon {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .icon img {
+            width: 20px;
+            height: 24px;
+        }
+        .col-lg-10{
+        padding-left:10%;
+        }
+  </style>
+</head>
+
+<body>
+<nav class="navbar">
+    <a href="{% url 'sensor' %}">Home</a>
+    <a href="{% url 'graph' %}">Graph</a>
+    <div id="notifyButton" class="icon">
+          <a href="{% url 'notify' %}">Notify Me!
+        <img src="{% static 'icons/notify.png' %}" alt="Notification"></a>
+    </div>
+     <a href="{% url 'diagram' %}"> Circuit Diagram </a>
+    <a href="{% url 'contact' %}">Contact Me!</a>
+</nav>
+<p style="text-align:center;">Temperature (Celsius): {{ temperature_C }}°C
+        Temperature (Fahrenheit): {{ temperature_F }}°F
+        Humidity: {{ humi }}%</p>
+
+
+
+<div class="col-lg-10 d-flex align-items-center">
+
+
+
+
+<div class="clock">
+
+<div class="shape1"></div>
+  <div class="clock row ">
+
+    <div class="wrapper GaugeMeter" id="GaugeMeter_1"
+        data-percent='{{ temperature_C }}'
+        data-min="0"
+
+        data-size="300"
+
+        data-append=".°C"
+        data-theme="Red-Gold-Green"
+        data-color="Snow"
+        data-back="Silver"
+        data-width="5"
+        data-stripe="4"
+        data-animationstep="1"
+        data-animate_gauge_colors="true"
+        data-animate_text_colors="true"
+        data-label="Temperature (°C)"
+        data-label_color="FFFFFF"
+        data-text_size="0.25"
+        data-fill="#F54532E"
+        data-showvalue="false">
+
+
+    </div>
+
+
+    <div class=" row wrapper GaugeMeter" id="GaugeMeter_1"
+        data-percent='{{ temperature_F }}'
+        data-min="0"
+
+        data-size="300"
+
+        data-append=".00"
+        data-theme="Red-Gold-Green"
+        data-color="Snow"
+        data-back="Silver"
+        data-width="6"
+        data-stripe="4"
+        data-animationstep="1"
+        data-animate_gauge_colors="true"
+        data-animate_text_colors="true"
+        data-label="Temperature (°F)"
+        data-label_color="#FF0000"
+        data-text_size="0.22"
+        data-fill="#F54532E"
+        data-showvalue="false">
+    </div>
+
+    <div class=" GaugeMeter" id="GaugeMeter_1"
+        data-percent='{{ humi }}'
+        data-min="0"
+
+        data-size="300"
+
+        data-append=".00"
+        data-theme="Red-Gold-Green"
+        data-color="Snow"
+        data-back="Silver"
+        data-width="6"
+        data-stripe="4"
+        data-animationstep="1"
+        data-animate_gauge_colors="true"
+        data-animate_text_colors="true"
+        data-label="Humidity(%)"
+        data-label_color="#FF0000"
+        data-text_size="0.22"
+        data-fill="#F54532E"
+        data-showvalue="false">
+
+    </div>
+
+  </div>
+
+
+
+      <div class="shape2"></div>
+         <div id="day"></div>
+          <div id="time" ></div>
+          <div id="midday" ></div>
+</div>
+
+</div>
+
+
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{% static 'scriptjs.js' %}"></script>
+</body>
+</html>

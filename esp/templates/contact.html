@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Django IoT project with ESP and Firebase integration for real-time sensor data monitoring and visualization.">
+  <meta name="keywords" content="Django, IoT, ESP, Firebase, Sensor Data, Real-time Monitoring, Web Development,firebase ,anandmohanam,anand,iot project">
+  <meta name="author" content="anand mohan">
+  <title>Django IoT Project with ESP and Firebase</title>
+     <link rel="icon" href="{% static 'icons/django-logo.png' %}" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <script>
+        {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Django IoT Project",
+  "url": "https://yourwebsite.com",
+  "description": "A Django-based IoT project using ESP and Firebase for real-time sensor data visualization.",
+  "applicationCategory": "WebApplication",
+  "author": {
+    "@type": "Person",
+    "name": "anand"
+  }
+}
+          function sendNotifyRequest() {
+      $.ajax({
+        url: '{% url 'sensor' %}',  // The URL to send the request to
+        method: 'POST',   // HTTP method
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for POST requests
+        },
+        success: function(response) {
+          console.log('Notify request succeeded.');
+          // Optionally handle success (e.g., update UI)
+        },
+        error: function(xhr, status, error) {
+          console.error('Notify request failed:', status, error);
+          // Optionally handle error
+        }
+      });
+    }
+
+    $(document).ready(function(){
+      // Call sendNotifyRequest when needed, for example:
+      $('#notifyButton').click(function() {
+        sendNotifyRequest();
+      });
+    });
+    </script>
+    <!--Stylesheet-->
+    <style media="screen">
+        *,
+        *:before,
+        *:after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #080710;
+            font-family: 'Poppins', sans-serif;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            padding: 10px 0;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .background {
+            width: 430px;
+            height: 520px;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+        }
+        .background .shape {
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            border-radius: 50%;
+        }
+        .shape:first-child {
+            background: linear-gradient(#1845ad, #23a2f6);
+            left: -80px;
+
+        }
+        .shape:last-child {
+            background: linear-gradient(to right, #ff512f, #f09819);
+            right: -30px;
+            bottom: -80px;
+        }
+        form {
+            height: 520px;
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.13);
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+            padding: 50px 35px;
+        }
+        form * {
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            outline: none;
+            border: none;
+        }
+        form h3 {
+            font-size: 32px;
+            font-weight: 500;
+            line-height: 42px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 30px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        input {
+            display: block;
+            height: 50px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.07);
+            border-radius: 3px;
+            padding: 0 10px;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 300;
+        }
+        ::placeholder {
+            color: #e5e5e5;
+        }
+        button {
+            margin-top: 50px;
+            width: 100%;
+            background-color: #ffffff;
+            color: #080710;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .social {
+            margin-top: 30px;
+            display: flex;
+        }
+        .social div {
+            background-color: rgba(255, 255, 255, 0.27);
+            width: 150px;
+            border-radius: 3px;
+            padding: 5px 10px 10px 5px;
+            color: #eaf0fb;
+            text-align: center;
+        }
+        .social div:hover {
+            background-color: rgba(255, 255, 255, 0.47);
+        }
+        .social .fb {
+            margin-left: 25px;
+        }
+        .social i {
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar">
+        <a href="{% url 'sensor' %}">Home</a>
+        <a href="{% url 'graph' %}">Graph</a>
+         <a href="{% url 'diagram' %}"> Circuit Diagram </a>
+         <a href="{% url 'contact' %}">Contact</a>
+
+            <a href="https://github.com/anandmohanam/" class="go"><i class="fab fa-github"></i> Github</a>
+            <a href="https://www.linkedin.com/anandmohanam" class="fb"><i class="fab fa-linkedin"></i> Linkedin</a>
+
+    </nav>
+
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+   <form method="POST" action="{% url 'contact' %}">
+    {% csrf_token %}
+    <label for="name">Name</label>
+    <input type="text" placeholder="Your Name" id="name" name="name">
+
+    <label for="email">Email</label>
+    <input type="email" placeholder="Your Email" id="email" name="email">
+
+    <label for="contact">Contact</label>
+    <input type="tel" placeholder="Your Contact Number" id="contact" name="contact">
+
+    <label for="message">Message</label>
+    <input type="text" placeholder="Your Message" id="message" name="message">
+
+    <button type="submit">MESSAGE</button>
+</form>
+
+</body>
+</html>

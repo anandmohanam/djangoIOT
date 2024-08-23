@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Django IoT project with ESP and Firebase integration for real-time sensor data monitoring and visualization.">
+  <meta name="keywords" content="Django, IoT, ESP, Firebase, Sensor Data, Real-time Monitoring, Web Development,firebase,anandmohanam,anand,iot project">
+  <meta name="author" content="anand mohan">
+  <title>Django IoT Project with ESP and Firebase</title>
+     <link rel="icon" href="{% static 'icons/django-logo.png' %}" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature and Humidity Chart</title>
+    <link rel="stylesheet" href="{% static 'stylescss.css' %}">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Django IoT Project",
+  "url": "https://yourwebsite.com",
+  "description": "A Django-based IoT project using ESP and Firebase for real-time sensor data visualization.",
+  "applicationCategory": "WebApplication",
+  "author": {
+    "@type": "Person",
+    "name": "anand"
+  }
+}
+</script>
+
+  <script>
+    function sendNotifyRequest() {
+      $.ajax({
+        url: '{% url 'graph' %}',  // The URL to send the request to
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        success: function(response) {
+          console.log('Notify request succeeded.');
+
+        },
+        error: function(xhr, status, error) {
+          console.error('Notify request failed:', status, error);
+
+        }
+      });
+    }
+
+    $(document).ready(function(){
+      // Call sendNotifyRequest when needed, for example:
+      $('#notifyButton').click(function() {
+        sendNotifyRequest();
+      });
+    });
+  </script>
+
+    <style>
+
+
+        #chart-container {
+            width: 80%;
+
+        }
+
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+
+
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .navbar .icon {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .icon img {
+            width: 20px;
+            height: 24px;
+        }
+    </style>
+</head>
+
+<body class="container">
+
+    <!-- Navigation bar -->
+    <nav class="navbar">
+    <a href="{% url 'sensor' %}">Home</a>
+    <a href="{% url 'graph' %}">Graph</a>
+    <div id="notifyButton" class="icon">
+        <a href="{% url 'notify' %}">Notify Me!
+        <img src="{% static 'icons/notify.png' %}" alt="Notification"></a>
+    </div>
+         <a href="{% url 'diagram' %}"> Circuit Diagram </a>
+        <a href="{% url 'contact' %}">Contact Me!</a>
+</nav>
+
+
+    <h2>Temperature and Humidity Over Time</h2>
+    <div class="box" id="chart-container">
+        <canvas id="tempHumidityChart"></canvas>
+    </div>
+
+    <!-- Include Chart.js from a CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Parse JSON data from Django
+        const jsonData = JSON.parse('{{ data|escapejs }}');
+
+        // Process the data for Chart.js
+        const labels = jsonData.map(entry => new Date(entry.fields.timestamp).toLocaleTimeString());
+        const temperatureValues = jsonData.map(entry => entry.fields.temperature_C);
+        const humidityValues = jsonData.map(entry => entry.fields.humidity);
+
+        // Create the Chart.js chart
+        const ctx = document.getElementById('tempHumidityChart').getContext('2d');
+        const tempHumidityChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Temperature (°C)',
+                        data: temperatureValues,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Humidity (%)',
+                        data: humidityValues,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Value'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
