@@ -122,3 +122,6 @@ def contact(request):
 
 def diagram(request):
     return render(request, 'diagram.html')
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
